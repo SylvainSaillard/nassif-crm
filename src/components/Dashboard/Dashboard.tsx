@@ -30,7 +30,7 @@ const Dashboard: React.FC = () => {
         {/* Header with action buttons */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Typography variant="h4" fontWeight="600">
-            Dashboard
+            Nassif Assurance Dashboard
           </Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Button

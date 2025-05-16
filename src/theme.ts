@@ -3,34 +3,36 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#f44336', // Red color similar to the Twisty logo in the reference
-      light: '#ff7961',
-      dark: '#ba000d',
+      main: '#2563EB', // Primary blue as requested
+      light: '#93C5FD', // Light pastel blue for pending status
+      dark: '#1D4ED8', // Darker blue for status text
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: '#3f51b5',
-      light: '#7986cb',
-      dark: '#303f9f',
+      main: '#212b36', // Near-black as secondary color
+      light: '#4e5862',
+      dark: '#0a0f14',
+      contrastText: '#ffffff',
     },
     background: {
-      default: '#f5f7fa',
+      default: '#F9FAFB', // Lighter background for a cleaner look
       paper: '#ffffff',
     },
     text: {
-      primary: '#333333',
-      secondary: '#666666',
+      primary: '#212b36', // Near-black for text
+      secondary: '#637381', // Medium gray with blue undertone
     },
     error: {
-      main: '#f44336',
+      main: '#EF4444', // Red for errors/overdue
     },
     warning: {
-      main: '#ff9800',
+      main: '#F59E0B', // Amber for warnings
     },
     info: {
-      main: '#2196f3',
+      main: '#E0F2FE', // Light blue for notification badges
     },
     success: {
-      main: '#4caf50',
+      main: '#10B981', // Green for success/completed
     },
   },
   typography: {
@@ -69,6 +71,14 @@ const theme = createTheme({
         root: {
           textTransform: 'none',
           borderRadius: 8,
+          fontWeight: 500,
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: '0 4px 8px 0 rgba(26, 95, 156, 0.2)',
+          },
+        },
+        containedPrimary: {
+          background: 'linear-gradient(135deg, #1a5f9c 0%, #2d7cc7 100%)',
         },
       },
     },
@@ -76,7 +86,61 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 12,
-          boxShadow: '0 2px 12px 0 rgba(0,0,0,0.05)',
+          boxShadow: '0 2px 12px 0 rgba(33, 43, 54, 0.08)',
+          border: '1px solid rgba(26, 95, 156, 0.05)',
+          transition: 'transform 0.3s, box-shadow 0.3s',
+          '&:hover': {
+            boxShadow: '0 4px 20px 0 rgba(33, 43, 54, 0.12)',
+            transform: 'translateY(-2px)',
+          },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          backgroundColor: '#F9FAFB',
+          color: '#212b36',
+          borderBottom: '1px solid #E5E7EB',
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          fontWeight: 500,
+        },
+        filledPrimary: {
+          backgroundColor: '#93C5FD',
+          color: '#1D4ED8',
+        },
+        filledSecondary: {
+          backgroundColor: '#E0F2FE',
+          color: '#2563EB',
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          fontWeight: 600,
+          color: '#ffffff',
+          border: '2px solid #ffffff',
+          boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.8)',
+        },
+        colorDefault: {
+          backgroundColor: '#2563EB',
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          fontWeight: 600,
+          color: '#212b36',
+          backgroundColor: 'rgba(26, 95, 156, 0.04)',
         },
       },
     },

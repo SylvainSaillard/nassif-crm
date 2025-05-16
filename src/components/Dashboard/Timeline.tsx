@@ -13,15 +13,14 @@ import {
   Chip,
   Avatar
 } from '@mui/material';
+import { CalendarViewWeek as WeekIcon, CalendarViewMonth as MonthIcon } from '@mui/icons-material';
 import {
-  Call as CallIcon,
-  Refresh as RenewIcon,
-  Event as EventIcon,
-  Email as EmailIcon,
-  CalendarViewWeek as WeekIcon,
-  CalendarViewMonth as MonthIcon
-} from '@mui/icons-material';
-import { format, addDays, startOfWeek } from 'date-fns';
+  Phone as CallIcon,
+  RefreshCw as RenewIcon,
+  Calendar as EventIcon,
+  Mail as EmailIcon
+} from 'lucide-react';
+import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
 
 interface TimelineEvent {
   id: number;
@@ -39,30 +38,30 @@ interface TimelineEvent {
 const getEventIcon = (type: string) => {
   switch (type) {
     case 'call':
-      return <CallIcon color="primary" />;
+      return <CallIcon color="#2563EB" size={18} />;
     case 'renewal':
-      return <RenewIcon color="secondary" />;
+      return <RenewIcon color="#8B5CF6" size={18} />;
     case 'meeting':
-      return <EventIcon sx={{ color: '#ff9800' }} />;
+      return <EventIcon color="#F59E0B" size={18} />;
     case 'email':
-      return <EmailIcon sx={{ color: '#2196f3' }} />;
+      return <EmailIcon color="#2563EB" size={18} />;
     default:
-      return <EventIcon />;
+      return <EventIcon size={18} />;
   }
 };
 
 const getEventColor = (type: string) => {
   switch (type) {
     case 'call':
-      return '#e3f2fd';
+      return '#E0F2FE'; // Light blue background
     case 'renewal':
-      return '#f3e5f5';
+      return '#F3E8FF'; // Light purple background
     case 'meeting':
-      return '#fff3e0';
+      return '#FEF3C7'; // Light amber background
     case 'email':
-      return '#e1f5fe';
+      return '#DBEAFE'; // Lighter blue background
     default:
-      return '#e8eaf6';
+      return '#F9FAFB'; // Default light background
   }
 };
 
@@ -193,17 +192,34 @@ const Timeline: React.FC = () => {
         <List sx={{ p: 0 }}>
           {Object.entries(eventsByDate).map(([dateKey, dateEvents], dateIndex) => (
             <React.Fragment key={dateKey}>
-              {dateIndex > 0 && <Divider sx={{ my: 1 }} />}
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mt: dateIndex > 0 ? 2 : 0 }}>
+              {dateIndex > 0 && (
+                <Divider sx={{ 
+                  my: 2,
+                  borderStyle: 'dashed',
+                  borderColor: 'rgba(0, 0, 0, 0.08)'
+                }} />
+              )}
+              <Box 
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  mb: 1.5, 
+                  mt: dateIndex > 0 ? 2 : 0,
+                  py: 1,
+                  px: 1.5,
+                  borderRadius: 1,
+                  bgcolor: isSameDay(new Date(dateKey), new Date()) ? 'rgba(37, 99, 235, 0.08)' : 'transparent',
+                }}
+              >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography 
                     variant="subtitle2" 
                     fontWeight="600" 
-                    color={format(new Date(dateKey), 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') ? 'primary.main' : 'text.secondary'}
+                    color={isSameDay(new Date(dateKey), new Date()) ? 'primary.main' : 'text.secondary'}
                   >
                     {format(new Date(dateKey), 'EEEE, MMMM d')}
                   </Typography>
-                  {format(new Date(dateKey), 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') && (
+                  {isSameDay(new Date(dateKey), new Date()) && (
                     <Box 
                       sx={{ 
                         width: 8, 
@@ -220,10 +236,12 @@ const Timeline: React.FC = () => {
                   size="small" 
                   sx={{ 
                     ml: 1, 
-                    bgcolor: format(new Date(dateKey), 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') ? 'rgba(244, 67, 54, 0.1)' : '#f5f5f5', 
+                    bgcolor: isSameDay(new Date(dateKey), new Date()) ? '#E0F2FE' : '#F9FAFB', 
+                    color: isSameDay(new Date(dateKey), new Date()) ? '#2563EB' : '#637381',
                     height: 20, 
                     fontSize: '0.7rem',
-                    fontWeight: format(new Date(dateKey), 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') ? 500 : 400,
+                    fontWeight: isSameDay(new Date(dateKey), new Date()) ? 600 : 500,
+                    border: isSameDay(new Date(dateKey), new Date()) ? '1px solid #BFDBFE' : 'none',
                   }} 
                 />
               </Box>

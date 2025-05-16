@@ -13,16 +13,15 @@ import {
   Tooltip,
   Divider
 } from '@mui/material';
-import { 
+import { Search as SearchIcon, MoreVert as MoreIcon } from '@mui/icons-material';
+import {
   Menu as MenuIcon,
-  Search as SearchIcon,
-  Notifications as NotificationsIcon,
+  Bell as NotificationsIcon,
   Mail as MailIcon,
-  MoreVert as MoreIcon,
-  Refresh as RenewalsIcon,
-  Description as ClaimsIcon,
-  People as ClientsIcon
-} from '@mui/icons-material';
+  RefreshCw as RenewalsIcon,
+  FileText as ClaimsIcon,
+  Users as ClientsIcon
+} from 'lucide-react';
 import { alpha, styled } from '@mui/material/styles';
 
 const Search = styled('div')(({ theme }) => ({
@@ -171,7 +170,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: 'white', borderBottom: '1px solid #f0f0f0' }}>
+      <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -187,9 +186,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 600 }}
+            sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 600, color: '#2563EB' }}
           >
-            Nacif Assurance CRM
+            Nassif Assurance
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -204,18 +203,18 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
           <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', mr: 2 }}>
             <Divider orientation="vertical" flexItem sx={{ height: 24, mx: 1.5 }} />
             <Tooltip title="Renewals">
-              <IconButton size="medium" color="inherit" sx={{ bgcolor: 'rgba(244, 67, 54, 0.08)', mr: 1 }}>
-                <RenewalsIcon fontSize="small" />
+              <IconButton size="medium" sx={{ bgcolor: '#E0F2FE', color: '#2563EB', mr: 1, '&:hover': { bgcolor: '#BFDBFE' } }}>
+                <RenewalsIcon size={18} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Claims">
-              <IconButton size="medium" color="inherit" sx={{ bgcolor: 'rgba(244, 67, 54, 0.08)', mr: 1 }}>
-                <ClaimsIcon fontSize="small" />
+              <IconButton size="medium" sx={{ bgcolor: '#F3E8FF', color: '#8B5CF6', mr: 1, '&:hover': { bgcolor: '#E9D5FF' } }}>
+                <ClaimsIcon size={18} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Clients">
-              <IconButton size="medium" color="inherit" sx={{ bgcolor: 'rgba(244, 67, 54, 0.08)', mr: 1 }}>
-                <ClientsIcon fontSize="small" />
+              <IconButton size="medium" sx={{ bgcolor: '#D1FAE5', color: '#10B981', mr: 1, '&:hover': { bgcolor: '#A7F3D0' } }}>
+                <ClientsIcon size={18} />
               </IconButton>
             </Tooltip>
             <Divider orientation="vertical" flexItem sx={{ height: 24, mx: 1.5 }} />

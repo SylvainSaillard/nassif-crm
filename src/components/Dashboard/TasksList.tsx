@@ -24,17 +24,16 @@ import {
   CardContent,
   Divider
 } from '@mui/material';
+import { Search as SearchIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 import {
-  MoreVert as MoreVertIcon,
-  Search as SearchIcon,
-  Call as CallIcon,
-  Email as EmailIcon,
-  Refresh as RefreshIcon,
-  Description as DocumentIcon,
-  AccessTime as PendingIcon,
-  ErrorOutline as OverdueIcon,
-  CheckCircleOutline as CompletedIcon
-} from '@mui/icons-material';
+  Phone as CallIcon,
+  Mail as EmailIcon,
+  RefreshCw as RefreshIcon,
+  FileText as DocumentIcon,
+  Clock as PendingIcon,
+  AlertTriangle as OverdueIcon,
+  CheckCircle as CompletedIcon
+} from 'lucide-react';
 
 interface Task {
   id: number;
@@ -74,31 +73,27 @@ const getStatusInfo = (status: string) => {
   switch (status) {
     case 'pending':
       return {
-        bg: '#e3f2fd',
-        color: '#1976d2',
-        icon: <PendingIcon fontSize="small" />,
-        emoji: '⏳'
+        bg: '#93C5FD',
+        color: '#1D4ED8',
+        icon: <PendingIcon size={16} strokeWidth={2} />
       };
     case 'completed':
       return {
-        bg: '#e8f5e9',
-        color: '#2e7d32',
-        icon: <CompletedIcon fontSize="small" />,
-        emoji: '✅'
+        bg: '#D1FAE5',
+        color: '#10B981',
+        icon: <CompletedIcon size={16} strokeWidth={2} />
       };
     case 'overdue':
       return {
-        bg: '#ffebee',
-        color: '#d32f2f',
-        icon: <OverdueIcon fontSize="small" />,
-        emoji: '🛑'
+        bg: '#FEE2E2',
+        color: '#EF4444',
+        icon: <OverdueIcon size={16} strokeWidth={2} />
       };
     default:
       return {
-        bg: '#e3f2fd',
-        color: '#1976d2',
-        icon: <PendingIcon fontSize="small" />,
-        emoji: '⏳'
+        bg: '#93C5FD',
+        color: '#1D4ED8',
+        icon: <PendingIcon size={16} strokeWidth={2} />
       };
   }
 };
@@ -459,7 +454,7 @@ const TasksList: React.FC = () => {
                   <TableCell>
                     <Chip
                       icon={getStatusInfo(task.status).icon}
-                      label={`${getStatusInfo(task.status).emoji} ${task.status.charAt(0).toUpperCase() + task.status.slice(1)}`}
+                      label={task.status.charAt(0).toUpperCase() + task.status.slice(1)}
                       size="small"
                       sx={{
                         bgcolor: getStatusInfo(task.status).bg,
