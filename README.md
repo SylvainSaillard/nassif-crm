@@ -1,6 +1,21 @@
-# Getting Started with Create React App
+# Nacif Assurance CRM Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, user-friendly CRM dashboard designed specifically for Nacif Assurance to manage international medical insurance contracts for expats and Romanian nationals.
+
+![Nacif Assurance CRM Dashboard](https://via.placeholder.com/800x400?text=Nacif+Assurance+CRM+Dashboard)
+
+## Project Overview
+
+Nacif Assurance manages international medical insurance contracts for expats and Romanian nationals. This custom CRM aims to replace or complement Odoo with a modern, simplified interface that supports day-to-day tasks, improves visibility, and centralizes key actions.
+
+### Features
+
+- **Member Database**: Full client profiles with contracts, documents, status, etc.
+- **Dashboard Overview**: Instant view of tasks, clients needing attention, and contract status
+- **Task Management**: Per-agent task assignment and tracking
+- **Follow-up System**: Renewal tracking and notification system
+- **Interactive UI**: Hover previews, status indicators, and quick access shortcuts
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
 
 ## Available Scripts
 
