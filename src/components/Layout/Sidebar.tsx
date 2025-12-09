@@ -17,6 +17,7 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard,
   Users,
@@ -43,30 +44,45 @@ interface SidebarProps {
 interface MenuItem {
   text: string;
   icon: React.ReactNode;
-  active?: boolean;
+  path: string;
   badge?: number;
-  section?: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, onMobileClose }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const mainMenuItems: MenuItem[] = [
-    { text: 'Dashboard', icon: <LayoutDashboard size={20} />, active: true },
-    { text: 'Clients', icon: <Users size={20} />, badge: 247 },
-    { text: 'Tasks', icon: <ClipboardList size={20} />, badge: 12 },
-    { text: 'Calendar', icon: <Calendar size={20} /> },
-    { text: 'Documents', icon: <FileText size={20} /> },
-    { text: 'Analytics', icon: <BarChart3 size={20} /> },
+    { text: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/' },
+    { text: 'Clients', icon: <Users size={20} />, path: '/clients', badge: 247 },
+    { text: 'Tasks', icon: <ClipboardList size={20} />, path: '/tasks', badge: 12 },
+    { text: 'Calendar', icon: <Calendar size={20} />, path: '/calendar' },
+    { text: 'Documents', icon: <FileText size={20} />, path: '/documents' },
+    { text: 'Analytics', icon: <BarChart3 size={20} />, path: '/analytics' },
   ];
 
   const secondaryMenuItems: MenuItem[] = [
-    { text: 'Notifications', icon: <Bell size={20} />, badge: 5 },
-    { text: 'Settings', icon: <Settings size={20} /> },
+    { text: 'Notifications', icon: <Bell size={20} />, path: '/notifications', badge: 5 },
+    { text: 'Settings', icon: <Settings size={20} />, path: '/settings' },
   ];
 
   const drawerWidth = open ? drawerWidthExpanded : drawerWidthCollapsed;
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    if (isMobile && onMobileClose) {
+      onMobileClose();
+    }
+  };
+
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
 
   const renderContent = (
     <>
@@ -94,6 +110,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
             <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
               {(open || isMobile) ? (
                 <ListItemButton
+                  onClick={() => handleNavigation(item.path)}
                   sx={{
                     borderRadius: 2,
                     mx: (open || isMobile) ? 1.5 : 1,
@@ -102,7 +119,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
                     minHeight: 48,
                     justifyContent: 'initial',
                     transition: 'all 0.2s ease',
-                    ...(item.active && {
+                    ...(isActive(item.path) && {
                       background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%)',
                       '& .MuiListItemIcon-root': {
                         color: '#3B82F6',
@@ -137,7 +154,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
                       minWidth: 40,
                       mr: 'auto',
                       justifyContent: 'center',
-                      color: item.active ? '#3B82F6' : '#6B7280',
+                      color: isActive(item.path) ? '#3B82F6' : '#6B7280',
                     }}
                   >
                     {item.icon}
@@ -146,8 +163,8 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
                     primary={item.text}
                     primaryTypographyProps={{
                       fontSize: '0.9rem',
-                      fontWeight: item.active ? 600 : 500,
-                      color: item.active ? '#3B82F6' : '#374151',
+                      fontWeight: isActive(item.path) ? 600 : 500,
+                      color: isActive(item.path) ? '#3B82F6' : '#374151',
                     }}
                   />
                   {item.badge && (
@@ -159,8 +176,8 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
                         minWidth: 28,
                         fontSize: '0.7rem',
                         fontWeight: 600,
-                        backgroundColor: item.active ? alpha('#3B82F6', 0.15) : '#F3F4F6',
-                        color: item.active ? '#3B82F6' : '#6B7280',
+                        backgroundColor: isActive(item.path) ? alpha('#3B82F6', 0.15) : '#F3F4F6',
+                        color: isActive(item.path) ? '#3B82F6' : '#6B7280',
                       }}
                     />
                   )}
@@ -179,6 +196,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
               ) : (
                 <Tooltip title={item.text} placement="right" arrow>
                   <ListItemButton
+                    onClick={() => handleNavigation(item.path)}
                     sx={{
                       borderRadius: 2,
                       mx: 1,
@@ -187,7 +205,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
                       minHeight: 48,
                       justifyContent: 'center',
                       transition: 'all 0.2s ease',
-                      ...(item.active && {
+                      ...(isActive(item.path) && {
                         background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%)',
                         '& .MuiListItemIcon-root': {
                           color: '#3B82F6',
@@ -203,7 +221,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
                         minWidth: 0,
                         mr: 0,
                         justifyContent: 'center',
-                        color: item.active ? '#3B82F6' : '#6B7280',
+                        color: isActive(item.path) ? '#3B82F6' : '#6B7280',
                       }}
                     >
                       {item.badge ? (
@@ -211,7 +229,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
                           badgeContent={item.badge > 99 ? '99+' : item.badge} 
                           sx={{
                             '& .MuiBadge-badge': {
-                              backgroundColor: item.active ? '#3B82F6' : '#6B7280',
+                              backgroundColor: isActive(item.path) ? '#3B82F6' : '#6B7280',
                               color: 'white',
                               fontSize: '0.6rem',
                               fontWeight: 700,
@@ -258,6 +276,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
             <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
               {(open || isMobile) ? (
                 <ListItemButton
+                  onClick={() => handleNavigation(item.path)}
                   sx={{
                     borderRadius: 2,
                     mx: (open || isMobile) ? 1.5 : 1,
@@ -298,6 +317,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose, mobileOpen = false, on
               ) : (
                 <Tooltip title={item.text} placement="right" arrow>
                   <ListItemButton
+                    onClick={() => handleNavigation(item.path)}
                     sx={{
                       borderRadius: 2,
                       mx: 1,
