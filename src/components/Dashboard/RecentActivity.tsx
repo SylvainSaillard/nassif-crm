@@ -5,18 +5,18 @@ import {
   Paper,
   List,
   ListItem,
-  ListItemAvatar,
-  ListItemText,
   Avatar,
-  Divider,
-  Chip
+  alpha,
+  IconButton
 } from '@mui/material';
 import {
-  Call as CallIcon,
-  Email as EmailIcon,
-  Refresh as RenewIcon,
-  Notifications as NotificationIcon
-} from '@mui/icons-material';
+  Phone,
+  Mail,
+  RefreshCw,
+  Bell,
+  Clock,
+  MoreHorizontal
+} from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface Activity {
@@ -26,6 +26,7 @@ interface Activity {
   client: {
     name: string;
     avatar: string;
+    initials: string;
   };
   timestamp: Date;
 }
@@ -33,35 +34,34 @@ interface Activity {
 const getActivityIcon = (type: string) => {
   switch (type) {
     case 'call':
-      return <CallIcon />;
+      return <Phone size={16} />;
     case 'email':
-      return <EmailIcon />;
+      return <Mail size={16} />;
     case 'renewal':
-      return <RenewIcon />;
+      return <RefreshCw size={16} />;
     case 'notification':
-      return <NotificationIcon />;
+      return <Bell size={16} />;
     default:
-      return <NotificationIcon />;
+      return <Bell size={16} />;
   }
 };
 
 const getActivityColor = (type: string) => {
   switch (type) {
     case 'call':
-      return '#e3f2fd';
+      return { bg: '#EFF6FF', color: '#3B82F6' };
     case 'email':
-      return '#e1f5fe';
+      return { bg: '#F5F3FF', color: '#8B5CF6' };
     case 'renewal':
-      return '#f3e5f5';
+      return { bg: '#ECFDF5', color: '#10B981' };
     case 'notification':
-      return '#fff3e0';
+      return { bg: '#FFF7ED', color: '#F59E0B' };
     default:
-      return '#e8eaf6';
+      return { bg: '#F3F4F6', color: '#6B7280' };
   }
 };
 
 const RecentActivity: React.FC = () => {
-  // Mock data for recent activities
   const activities: Activity[] = [
     {
       id: 1,
@@ -69,7 +69,8 @@ const RecentActivity: React.FC = () => {
       action: 'You called',
       client: {
         name: 'James Smith',
-        avatar: 'JS',
+        avatar: '',
+        initials: 'JS'
       },
       timestamp: new Date(Date.now() - 30 * 60 * 1000), // 30 minutes ago
     },
@@ -79,7 +80,8 @@ const RecentActivity: React.FC = () => {
       action: 'Renewal completed for',
       client: {
         name: 'Maria Popescu',
-        avatar: 'MP',
+        avatar: '',
+        initials: 'MP'
       },
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
     },
@@ -89,17 +91,19 @@ const RecentActivity: React.FC = () => {
       action: 'Reminder sent to',
       client: {
         name: 'Carla M.',
-        avatar: 'CM',
+        avatar: '',
+        initials: 'CM'
       },
       timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
     },
     {
       id: 4,
       type: 'email',
-      action: 'You sent policy documents to',
+      action: 'Document sent to',
       client: {
         name: 'John Doe',
-        avatar: 'JD',
+        avatar: '',
+        initials: 'JD'
       },
       timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
     },
@@ -109,73 +113,171 @@ const RecentActivity: React.FC = () => {
       action: 'Missed call from',
       client: {
         name: 'Elena Vasilescu',
-        avatar: 'EV',
+        avatar: '',
+        initials: 'EV'
       },
       timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
     },
   ];
 
   return (
-    <Paper elevation={0} sx={{ border: '1px solid #f0f0f0', borderRadius: 2 }}>
-      <Box sx={{ p: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h6" fontWeight="600">
+    <Paper 
+      elevation={0} 
+      sx={{ 
+        border: '1px solid #E5E7EB', 
+        borderRadius: 3,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box sx={{ p: 2.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #F3F4F6' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 32,
+              height: 32,
+              borderRadius: 2,
+              backgroundColor: '#F3F4F6',
+              color: '#4B5563',
+            }}
+          >
+            <Clock size={16} />
+          </Box>
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              fontWeight: 700, 
+              fontSize: '1rem',
+              color: '#111827'
+            }}
+          >
             Recent Activity
           </Typography>
-          <Typography variant="body2" color="primary" sx={{ cursor: 'pointer', fontWeight: 500 }}>
-            View All
-          </Typography>
         </Box>
-        <List sx={{ p: 0 }}>
-          {activities.map((activity, index) => (
-            <React.Fragment key={activity.id}>
-              {index > 0 && <Divider component="li" />}
-              <ListItem alignItems="flex-start" sx={{ py: 1.5 }}>
-                <ListItemAvatar>
-                  <Avatar
-                    sx={{
-                      bgcolor: getActivityColor(activity.type),
-                      color: 'primary.main',
+        <IconButton size="small">
+          <MoreHorizontal size={18} color="#9CA3AF" />
+        </IconButton>
+      </Box>
+
+      <List sx={{ p: 0, flex: 1, overflow: 'auto' }}>
+        {activities.map((activity, index) => {
+          const colors = getActivityColor(activity.type);
+          
+          return (
+            <ListItem 
+              key={activity.id} 
+              alignItems="flex-start" 
+              sx={{ 
+                py: 2, 
+                px: 2.5,
+                borderBottom: index < activities.length - 1 ? '1px solid #F9FAFB' : 'none',
+                transition: 'background-color 0.2s ease',
+                '&:hover': {
+                  backgroundColor: '#F9FAFB',
+                }
+              }}
+            >
+              <Box sx={{ position: 'relative', mr: 2 }}>
+                <Avatar
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    bgcolor: colors.bg,
+                    color: colors.color,
+                    border: '1px solid',
+                    borderColor: alpha(colors.color, 0.1),
+                  }}
+                >
+                  {getActivityIcon(activity.type)}
+                </Avatar>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: -2,
+                    right: -2,
+                    width: 18,
+                    height: 18,
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #E5E7EB',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.6rem',
+                    fontWeight: 700,
+                    color: '#6B7280',
+                  }}
+                >
+                  {activity.client.initials}
+                </Box>
+              </Box>
+              
+              <Box sx={{ flex: 1 }}>
+                <Typography 
+                  variant="body2" 
+                  component="div" 
+                  sx={{ 
+                    color: '#6B7280', 
+                    fontSize: '0.875rem',
+                    mb: 0.5,
+                    lineHeight: 1.4
+                  }}
+                >
+                  {activity.action}{' '}
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    sx={{ 
+                      color: '#111827', 
+                      fontWeight: 600,
+                      fontSize: '0.875rem'
                     }}
                   >
-                    {getActivityIcon(activity.type)}
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography variant="body2" component="span">
-                        {activity.action}{' '}
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                          fontWeight="600"
-                        >
-                          {activity.client.name}
-                        </Typography>
-                      </Typography>
-                    </Box>
-                  }
-                  secondary={
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.5 }}>
-                      <Chip
-                        label={formatDistanceToNow(activity.timestamp, { addSuffix: true })}
-                        size="small"
-                        sx={{ 
-                          height: 20, 
-                          fontSize: '0.7rem',
-                          bgcolor: '#f5f5f5',
-                          fontWeight: 400
-                        }}
-                      />
-                    </Box>
-                  }
-                />
-              </ListItem>
-            </React.Fragment>
-          ))}
-        </List>
+                    {activity.client.name}
+                  </Typography>
+                </Typography>
+                
+                <Typography 
+                  variant="caption" 
+                  component="div"
+                  sx={{ 
+                    color: '#9CA3AF',
+                    fontSize: '0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.5
+                  }}
+                >
+                  {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
+                </Typography>
+              </Box>
+            </ListItem>
+          );
+        })}
+      </List>
+      
+      <Box sx={{ p: 2, borderTop: '1px solid #F3F4F6', textAlign: 'center' }}>
+        <Typography 
+          variant="button" 
+          sx={{ 
+            fontSize: '0.75rem', 
+            fontWeight: 600, 
+            color: '#6B7280',
+            textTransform: 'none',
+            cursor: 'pointer',
+            '&:hover': {
+              color: '#3B82F6',
+            }
+          }}
+        >
+          View all history
+        </Typography>
       </Box>
     </Paper>
   );

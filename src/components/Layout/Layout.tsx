@@ -12,12 +12,14 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 }>(({ theme, open }) => ({
   flexGrow: 1,
   padding: 0,
-  transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  marginLeft: open ? `${drawerWidthExpanded}px` : `${drawerWidthCollapsed}px`,
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  // marginLeft removed because Sidebar is in the flex flow
+  width: '100%', // Take remaining space
+  minWidth: 0, // Prevent flex item overflow
+  minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  width: '100%',
+  alignItems: 'stretch',
 }));
 
 interface LayoutProps {
@@ -34,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F8FAFC' }}>
       <CssBaseline />
-      <Header onMenuToggle={handleSidebarToggle} />
+      <Header onMenuToggle={handleSidebarToggle} sidebarOpen={sidebarOpen} />
       <Sidebar open={sidebarOpen} onClose={handleSidebarToggle} />
       <Main open={sidebarOpen}>
         <Box 
@@ -42,9 +44,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           sx={{ 
             mt: 9, 
             width: '100%', 
-            maxWidth: '1440px',
-            px: { xs: 2, md: 3 },
-            boxSizing: 'border-box'
+            maxWidth: '1600px', // Increased max-width for better use of space
+            mx: 'auto', // Center horizontally
+            px: { xs: 2, md: 3, lg: 4 },
+            pb: 4,
+            boxSizing: 'border-box',
           }}
         >
           {children}

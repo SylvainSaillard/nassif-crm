@@ -11,11 +11,11 @@ import {
   MenuItem,
   Tooltip,
   Chip,
-  alpha
+  alpha,
+  Typography
 } from '@mui/material';
 import { MoreVert as MoreIcon } from '@mui/icons-material';
 import {
-  Menu as MenuIcon,
   Bell,
   Mail,
   RefreshCw,
@@ -23,7 +23,10 @@ import {
   Users,
   Search,
   Command,
-  Sparkles
+  Sparkles,
+  Shield,
+  PanelLeftClose,
+  PanelLeft
 } from 'lucide-react';
 import { styled } from '@mui/material/styles';
 
@@ -103,9 +106,10 @@ const NotificationBadge = styled(Badge)(() => ({
 
 interface HeaderProps {
   onMenuToggle: () => void;
+  sidebarOpen?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
+const Header: React.FC<HeaderProps> = ({ onMenuToggle, sidebarOpen = true }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -224,23 +228,73 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
           backgroundColor: 'rgba(255, 255, 255, 0.85)',
           backdropFilter: 'blur(12px)',
           borderBottom: '1px solid #E5E7EB',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
         <Toolbar sx={{ minHeight: { xs: 64, md: 70 } }}>
-          {/* Menu Toggle */}
-          <IconButton
-            size="large"
-            edge="start"
-            aria-label="open drawer"
-            onClick={onMenuToggle}
+          {/* Logo */}
+          <Box 
             sx={{ 
-              mr: 1,
-              color: '#374151',
-              '&:hover': { backgroundColor: '#F3F4F6' },
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1.5,
+              mr: 2,
             }}
           >
-            <MenuIcon size={22} />
-          </IconButton>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: 2,
+                background: 'linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+              }}
+            >
+              <Shield size={22} color="white" strokeWidth={2.5} />
+            </Box>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  fontWeight: 700, 
+                  fontSize: '1rem',
+                  background: 'linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.2,
+                }}
+              >
+                Nassif Assurance
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Sidebar Toggle */}
+          <Tooltip title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"} arrow>
+            <IconButton
+              size="small"
+              aria-label="toggle sidebar"
+              onClick={onMenuToggle}
+              sx={{ 
+                mr: 2,
+                color: '#6B7280',
+                backgroundColor: '#F3F4F6',
+                borderRadius: 1.5,
+                width: 36,
+                height: 36,
+                '&:hover': { 
+                  backgroundColor: '#E5E7EB',
+                  color: '#374151',
+                },
+              }}
+            >
+              {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeft size={18} />}
+            </IconButton>
+          </Tooltip>
 
           {/* Search Bar */}
           <SearchContainer>

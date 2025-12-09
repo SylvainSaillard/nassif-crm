@@ -25,8 +25,7 @@ import {
   Calendar,
   BarChart3,
   LogOut,
-  ChevronRight,
-  Shield
+  ChevronRight
 } from 'lucide-react';
 
 const drawerWidthExpanded = 280;
@@ -202,76 +201,11 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
           boxShadow: '4px 0 24px rgba(0, 0, 0, 0.04)',
           transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           overflowX: 'hidden',
+          marginTop: '70px',
+          height: 'calc(100% - 70px)',
         },
       }}
     >
-      {/* Logo Section */}
-      <Box 
-        sx={{ 
-          p: open ? 2.5 : 1.5, 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: open ? 'flex-start' : 'center',
-          gap: 1.5,
-          minHeight: 72,
-        }}
-      >
-        <Box
-          sx={{
-            width: 44,
-            height: 44,
-            minWidth: 44,
-            borderRadius: 2.5,
-            background: 'linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 14px rgba(59, 130, 246, 0.35)',
-            cursor: 'pointer',
-            transition: 'transform 0.2s ease',
-            '&:hover': {
-              transform: 'scale(1.05)',
-            },
-          }}
-          onClick={onClose}
-        >
-          <Shield size={24} color="white" strokeWidth={2.5} />
-        </Box>
-        {open && (
-          <Box sx={{ overflow: 'hidden' }}>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                fontWeight: 700, 
-                fontSize: '1.1rem',
-                background: 'linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                letterSpacing: '-0.02em',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Nassif Assurance
-            </Typography>
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                color: '#9CA3AF',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Insurance CRM
-            </Typography>
-          </Box>
-        )}
-      </Box>
-
-      <Divider sx={{ mx: open ? 2 : 1, borderColor: '#F3F4F6' }} />
-
       {/* Main Navigation */}
       <Box sx={{ overflow: 'auto', flex: 1, py: 2 }}>
         {open && (
