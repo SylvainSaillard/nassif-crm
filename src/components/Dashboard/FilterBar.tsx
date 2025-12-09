@@ -15,7 +15,6 @@ import {
   Typography,
   IconButton,
   Paper,
-  Divider,
   Stack,
   SelectChangeEvent
 } from '@mui/material';

@@ -4,9 +4,6 @@ import { styled } from '@mui/material/styles';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
-const drawerWidthExpanded = 280;
-const drawerWidthCollapsed = 80;
-
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
