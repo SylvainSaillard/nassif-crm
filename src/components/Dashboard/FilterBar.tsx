@@ -179,19 +179,40 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
   };
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <Paper elevation={0} sx={{ p: 2, border: '1px solid #f0f0f0', borderRadius: 2 }}>
+    <Box sx={{ mb: 4 }}>
+      <Paper 
+        elevation={0} 
+        sx={{ 
+          p: 2.5, 
+          border: '1px solid #E5E7EB', 
+          borderRadius: 3,
+          background: '#ffffff',
+        }}
+      >
         <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
           <TextField
             size="small"
             placeholder="Search clients, policies, or tasks..."
             value={searchValue}
             onChange={handleSearchChange}
-            sx={{ flexGrow: 1, minWidth: '200px' }}
+            sx={{ 
+              flexGrow: 1, 
+              minWidth: '200px',
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 2.5,
+                backgroundColor: '#F9FAFB',
+                '&:hover': {
+                  backgroundColor: '#F3F4F6',
+                },
+                '&.Mui-focused': {
+                  backgroundColor: '#ffffff',
+                },
+              },
+            }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon fontSize="small" />
+                  <SearchIcon fontSize="small" sx={{ color: '#9CA3AF' }} />
                 </InputAdornment>
               ),
             }}
@@ -201,11 +222,18 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
             variant="outlined"
             startIcon={<FilterListIcon />}
             onClick={handleFilterClick}
-            color="primary"
             size="small"
             sx={{ 
-              borderRadius: 2,
-              position: 'relative'
+              borderRadius: 2.5,
+              borderColor: '#E5E7EB',
+              color: '#374151',
+              fontWeight: 600,
+              px: 2,
+              position: 'relative',
+              '&:hover': {
+                borderColor: '#3B82F6',
+                backgroundColor: 'rgba(59, 130, 246, 0.04)',
+              },
             }}
           >
             Filters
@@ -213,9 +241,9 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
               <Box
                 sx={{
                   position: 'absolute',
-                  top: -5,
-                  right: -5,
-                  bgcolor: 'primary.main',
+                  top: -6,
+                  right: -6,
+                  background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
                   color: 'white',
                   width: 20,
                   height: 20,
@@ -223,7 +251,9 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '0.75rem',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  boxShadow: '0 2px 8px rgba(59, 130, 246, 0.4)',
                 }}
               >
                 {activeFilters.length}
@@ -234,9 +264,18 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            color="primary"
             size="small"
-            sx={{ borderRadius: 2 }}
+            sx={{ 
+              borderRadius: 2.5,
+              background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+              fontWeight: 600,
+              px: 2,
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%)',
+                boxShadow: '0 6px 16px rgba(59, 130, 246, 0.4)',
+              },
+            }}
           >
             Add Task
           </Button>

@@ -4,29 +4,20 @@ import { styled } from '@mui/material/styles';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
-const drawerWidth = 240;
+const drawerWidthExpanded = 280;
+const drawerWidthCollapsed = 80;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
   padding: 0,
-  transition: theme.transitions.create('margin', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-${drawerWidth}px`,
+  transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  marginLeft: open ? `${drawerWidthExpanded}px` : `${drawerWidthCollapsed}px`,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   width: '100%',
-  ...(open && {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  }),
 }));
 
 interface LayoutProps {
@@ -41,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f5f7fa' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F8FAFC' }}>
       <CssBaseline />
       <Header onMenuToggle={handleSidebarToggle} />
       <Sidebar open={sidebarOpen} onClose={handleSidebarToggle} />
@@ -49,7 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Box 
           component="div" 
           sx={{ 
-            mt: 8, 
+            mt: 9, 
             width: '100%', 
             maxWidth: '1440px',
             px: { xs: 2, md: 3 },

@@ -230,10 +230,43 @@ const TasksList: React.FC = () => {
 
   return (
     <Box sx={{ mb: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h5" fontWeight="600">
-          My Tasks / Assigned Clients
-        </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 36,
+              height: 36,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+            }}
+          >
+            <CallIcon size={18} color="white" />
+          </Box>
+          <Box>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 700,
+                color: '#111827',
+                fontSize: '1.1rem',
+              }}
+            >
+              My Tasks
+            </Typography>
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                color: '#6B7280',
+              }}
+            >
+              {filteredTasks.length} tasks assigned to you
+            </Typography>
+          </Box>
+        </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <TextField
             size="small"
@@ -271,10 +304,20 @@ const TasksList: React.FC = () => {
       <Tabs
         value={tabValue}
         onChange={handleTabChange}
-        sx={{ mb: 2 }}
+        sx={{ 
+          mb: 2,
+          '& .MuiTab-root': {
+            fontWeight: 600,
+            fontSize: '0.875rem',
+            textTransform: 'none',
+            minHeight: 44,
+          },
+        }}
         TabIndicatorProps={{
           style: {
-            backgroundColor: '#f44336',
+            backgroundColor: '#3B82F6',
+            height: 3,
+            borderRadius: '3px 3px 0 0',
           },
         }}
       >
@@ -283,9 +326,17 @@ const TasksList: React.FC = () => {
         <Tab label="Overdue" />
       </Tabs>
 
-      <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #f0f0f0', borderRadius: 2, overflowX: 'auto' }}>
+      <TableContainer 
+        component={Paper} 
+        elevation={0} 
+        sx={{ 
+          border: '1px solid #E5E7EB', 
+          borderRadius: 3, 
+          overflowX: 'auto',
+        }}
+      >
         <Table sx={{ minWidth: 650 }}>
-          <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
+          <TableHead sx={{ backgroundColor: '#F9FAFB' }}>
             <TableRow>
               <TableCell>Client</TableCell>
               <TableCell>Company</TableCell>

@@ -3,7 +3,6 @@ import {
   AppBar, 
   Toolbar, 
   IconButton, 
-  Typography, 
   InputBase, 
   Badge, 
   Avatar,
@@ -11,57 +10,94 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Divider
+  Chip,
+  alpha
 } from '@mui/material';
-import { Search as SearchIcon, MoreVert as MoreIcon } from '@mui/icons-material';
+import { MoreVert as MoreIcon } from '@mui/icons-material';
 import {
   Menu as MenuIcon,
-  Bell as NotificationsIcon,
-  Mail as MailIcon,
-  RefreshCw as RenewalsIcon,
-  FileText as ClaimsIcon,
-  Users as ClientsIcon
+  Bell,
+  Mail,
+  RefreshCw,
+  FileText,
+  Users,
+  Search,
+  Command,
+  Sparkles
 } from 'lucide-react';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
-const Search = styled('div')(({ theme }) => ({
+const SearchContainer = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: 12,
+  backgroundColor: '#F3F4F6',
+  border: '1px solid #E5E7EB',
+  transition: 'all 0.2s ease',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: '#ffffff',
+    borderColor: '#D1D5DB',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  },
+  '&:focus-within': {
+    backgroundColor: '#ffffff',
+    borderColor: '#3B82F6',
+    boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)',
   },
   marginRight: theme.spacing(2),
-  marginLeft: 0,
+  marginLeft: theme.spacing(2),
   width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
+  maxWidth: 400,
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
   },
-  border: '1px solid #eaeaea',
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+const SearchIconWrapper = styled('div')(() => ({
+  padding: '0 12px',
   height: '100%',
   position: 'absolute',
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#9e9e9e',
+  color: '#9CA3AF',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
+  color: '#374151',
+  width: '100%',
   '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
+    padding: '10px 12px 10px 44px',
+    fontSize: '0.875rem',
     width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '40ch',
+    '&::placeholder': {
+      color: '#9CA3AF',
+      opacity: 1,
     },
+  },
+}));
+
+const QuickActionButton = styled(IconButton)(({ theme }) => ({
+  width: 40,
+  height: 40,
+  borderRadius: 10,
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+  },
+}));
+
+const NotificationBadge = styled(Badge)(() => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#EF4444',
+    color: 'white',
+    fontSize: '0.65rem',
+    fontWeight: 700,
+    minWidth: 18,
+    height: 18,
+    padding: '0 4px',
+    borderRadius: 9,
+    border: '2px solid white',
   },
 }));
 
@@ -98,7 +134,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={menuId}
@@ -109,10 +145,19 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      PaperProps={{
+        sx: {
+          mt: 1,
+          borderRadius: 2,
+          boxShadow: '0 10px 40px -10px rgba(0,0,0,0.2)',
+          border: '1px solid #E5E7EB',
+          minWidth: 200,
+        },
+      }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose} sx={{ py: 1.5, px: 2 }}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose} sx={{ py: 1.5, px: 2 }}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose} sx={{ py: 1.5, px: 2, color: '#EF4444' }}>Logout</MenuItem>
     </Menu>
   );
 
@@ -121,7 +166,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={mobileMenuId}
@@ -132,138 +177,230 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      PaperProps={{
+        sx: {
+          mt: 1,
+          borderRadius: 2,
+          boxShadow: '0 10px 40px -10px rgba(0,0,0,0.2)',
+          border: '1px solid #E5E7EB',
+        },
+      }}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+      <MenuItem sx={{ py: 1.5 }}>
+        <IconButton size="small" sx={{ mr: 1 }}>
           <Badge badgeContent={4} color="error">
-            <MailIcon />
+            <Mail size={20} />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        Messages
       </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+      <MenuItem sx={{ py: 1.5 }}>
+        <IconButton size="small" sx={{ mr: 1 }}>
+          <Badge badgeContent={5} color="error">
+            <Bell size={20} />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        Notifications
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <Avatar>A</Avatar>
-        </IconButton>
-        <p>Profile</p>
+      <MenuItem onClick={handleProfileMenuOpen} sx={{ py: 1.5 }}>
+        <Avatar sx={{ width: 28, height: 28, mr: 1 }}>SN</Avatar>
+        Profile
       </MenuItem>
     </Menu>
   );
 
+  const quickActions = [
+    { icon: <RefreshCw size={18} />, label: 'Renewals', color: '#3B82F6', bgColor: '#EFF6FF', count: 3 },
+    { icon: <FileText size={18} />, label: 'Claims', color: '#8B5CF6', bgColor: '#F5F3FF', count: 2 },
+    { icon: <Users size={18} />, label: 'Clients', color: '#10B981', bgColor: '#ECFDF5', count: null },
+  ];
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
-        <Toolbar>
+      <AppBar 
+        position="fixed" 
+        elevation={0} 
+        sx={{ 
+          backgroundColor: 'rgba(255, 255, 255, 0.85)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid #E5E7EB',
+        }}
+      >
+        <Toolbar sx={{ minHeight: { xs: 64, md: 70 } }}>
+          {/* Menu Toggle */}
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
             onClick={onMenuToggle}
+            sx={{ 
+              mr: 1,
+              color: '#374151',
+              '&:hover': { backgroundColor: '#F3F4F6' },
+            }}
           >
-            <MenuIcon />
+            <MenuIcon size={22} />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 600, color: '#2563EB' }}
-          >
-            Nassif Assurance
-          </Typography>
-          <Search>
+
+          {/* Search Bar */}
+          <SearchContainer>
             <SearchIconWrapper>
-              <SearchIcon />
+              <Search size={18} />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search clients, policies, or tasks..."
+              placeholder="Search clients, policies, tasks..."
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', mr: 2 }}>
-            <Divider orientation="vertical" flexItem sx={{ height: 24, mx: 1.5 }} />
-            <Tooltip title="Renewals">
-              <IconButton size="medium" sx={{ bgcolor: '#E0F2FE', color: '#2563EB', mr: 1, '&:hover': { bgcolor: '#BFDBFE' } }}>
-                <RenewalsIcon size={18} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Claims">
-              <IconButton size="medium" sx={{ bgcolor: '#F3E8FF', color: '#8B5CF6', mr: 1, '&:hover': { bgcolor: '#E9D5FF' } }}>
-                <ClaimsIcon size={18} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Clients">
-              <IconButton size="medium" sx={{ bgcolor: '#D1FAE5', color: '#10B981', mr: 1, '&:hover': { bgcolor: '#A7F3D0' } }}>
-                <ClientsIcon size={18} />
-              </IconButton>
-            </Tooltip>
-            <Divider orientation="vertical" flexItem sx={{ height: 24, mx: 1.5 }} />
-          </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Tooltip title="Messages">
-              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications">
-              <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-              >
-                <Badge badgeContent={17} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Account">
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <Avatar
+            <Box sx={{ 
+              position: 'absolute', 
+              right: 8, 
+              top: '50%', 
+              transform: 'translateY(-50%)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5,
+            }}>
+              <Chip
+                size="small"
+                icon={<Command size={12} />}
+                label="K"
                 sx={{
-                  width: 36,
-                  height: 36,
-                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-                  fontSize: '1rem',
+                  height: 24,
+                  fontSize: '0.7rem',
                   fontWeight: 600,
-                  border: '2px solid #ffffff',
-                  boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.8)',
+                  backgroundColor: '#F3F4F6',
+                  color: '#6B7280',
+                  '& .MuiChip-icon': {
+                    color: '#6B7280',
+                  },
+                }}
+              />
+            </Box>
+          </SearchContainer>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/* Quick Actions */}
+          <Box sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center', gap: 1, mr: 2 }}>
+            {quickActions.map((action, index) => (
+              <Tooltip key={index} title={action.label} arrow>
+                <QuickActionButton
+                  sx={{ 
+                    bgcolor: action.bgColor, 
+                    color: action.color,
+                    '&:hover': { 
+                      bgcolor: alpha(action.color, 0.15),
+                    },
+                  }}
+                >
+                  {action.count ? (
+                    <Badge 
+                      badgeContent={action.count} 
+                      sx={{
+                        '& .MuiBadge-badge': {
+                          backgroundColor: action.color,
+                          color: 'white',
+                          fontSize: '0.6rem',
+                          fontWeight: 700,
+                          minWidth: 16,
+                          height: 16,
+                        },
+                      }}
+                    >
+                      {action.icon}
+                    </Badge>
+                  ) : action.icon}
+                </QuickActionButton>
+              </Tooltip>
+            ))}
+          </Box>
+
+          {/* Divider */}
+          <Box 
+            sx={{ 
+              display: { xs: 'none', md: 'block' },
+              width: 1, 
+              height: 32, 
+              bgcolor: '#E5E7EB', 
+              mx: 2 
+            }} 
+          />
+
+          {/* Notifications */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 0.5 }}>
+            <Tooltip title="Messages" arrow>
+              <IconButton 
+                sx={{ 
+                  color: '#6B7280',
+                  '&:hover': { backgroundColor: '#F3F4F6' },
                 }}
               >
-                A
-              </Avatar>
+                <NotificationBadge badgeContent={4}>
+                  <Mail size={20} />
+                </NotificationBadge>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Notifications" arrow>
+              <IconButton 
+                sx={{ 
+                  color: '#6B7280',
+                  '&:hover': { backgroundColor: '#F3F4F6' },
+                }}
+              >
+                <NotificationBadge badgeContent={5}>
+                  <Bell size={20} />
+                </NotificationBadge>
               </IconButton>
             </Tooltip>
           </Box>
+
+          {/* AI Assistant Button */}
+          <Tooltip title="AI Assistant" arrow>
+            <IconButton
+              sx={{
+                ml: 1,
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)',
+                color: 'white',
+                width: 36,
+                height: 36,
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%)',
+                  transform: 'scale(1.05)',
+                },
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Sparkles size={18} />
+            </IconButton>
+          </Tooltip>
+
+          {/* Profile */}
+          <Tooltip title="Account" arrow>
+            <IconButton
+              edge="end"
+              aria-label="account"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              sx={{ ml: 1.5 }}
+            >
+              <Avatar
+                sx={{
+                  width: 38,
+                  height: 38,
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  fontSize: '0.875rem',
+                  fontWeight: 700,
+                  border: '2px solid #ffffff',
+                  boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)',
+                }}
+              >
+                SN
+              </Avatar>
+            </IconButton>
+          </Tooltip>
+
+          {/* Mobile Menu */}
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -271,7 +408,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              sx={{ color: '#374151' }}
             >
               <MoreIcon />
             </IconButton>

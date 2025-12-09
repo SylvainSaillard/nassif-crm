@@ -9,124 +9,431 @@ import {
   ListItemText,
   Typography,
   Avatar,
-  Divider
+  Divider,
+  alpha,
+  Badge,
+  Chip,
+  Tooltip
 } from '@mui/material';
 import { 
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
-  Assignment as AssignmentIcon,
-  Notifications as NotificationsIcon,
-  InsertDriveFile as DocumentIcon,
-  Settings as SettingsIcon,
-  CalendarMonth as CalendarIcon,
-  Analytics as AnalyticsIcon
-} from '@mui/icons-material';
+  LayoutDashboard,
+  Users,
+  ClipboardList,
+  Bell,
+  FileText,
+  Settings,
+  Calendar,
+  BarChart3,
+  LogOut,
+  ChevronRight,
+  Shield
+} from 'lucide-react';
 
-const drawerWidth = 240;
+const drawerWidthExpanded = 280;
+const drawerWidthCollapsed = 80;
 
 interface SidebarProps {
   open: boolean;
   onClose: () => void;
 }
 
+interface MenuItem {
+  text: string;
+  icon: React.ReactNode;
+  active?: boolean;
+  badge?: number;
+  section?: string;
+}
+
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
-  const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, active: true },
-    { text: 'Clients', icon: <PeopleIcon /> },
-    { text: 'Tasks', icon: <AssignmentIcon /> },
-    { text: 'Calendar', icon: <CalendarIcon /> },
-    { text: 'Documents', icon: <DocumentIcon /> },
-    { text: 'Analytics', icon: <AnalyticsIcon /> },
-    { text: 'Notifications', icon: <NotificationsIcon /> },
-    { text: 'Settings', icon: <SettingsIcon /> },
+  const mainMenuItems: MenuItem[] = [
+    { text: 'Dashboard', icon: <LayoutDashboard size={20} />, active: true },
+    { text: 'Clients', icon: <Users size={20} />, badge: 247 },
+    { text: 'Tasks', icon: <ClipboardList size={20} />, badge: 12 },
+    { text: 'Calendar', icon: <Calendar size={20} /> },
+    { text: 'Documents', icon: <FileText size={20} /> },
+    { text: 'Analytics', icon: <BarChart3 size={20} /> },
   ];
+
+  const secondaryMenuItems: MenuItem[] = [
+    { text: 'Notifications', icon: <Bell size={20} />, badge: 5 },
+    { text: 'Settings', icon: <Settings size={20} /> },
+  ];
+
+  const drawerWidth = open ? drawerWidthExpanded : drawerWidthCollapsed;
+
+  const renderMenuItem = (item: MenuItem, index: number) => {
+    const menuButton = (
+      <ListItemButton
+        sx={{
+          borderRadius: 2,
+          mx: open ? 1.5 : 1,
+          py: 1.25,
+          px: open ? 2 : 1.5,
+          minHeight: 48,
+          justifyContent: open ? 'initial' : 'center',
+          transition: 'all 0.2s ease',
+          ...(item.active && {
+            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%)',
+            '& .MuiListItemIcon-root': {
+              color: '#3B82F6',
+            },
+            '& .MuiListItemText-primary': {
+              color: '#3B82F6',
+              fontWeight: 600,
+            },
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 4,
+              height: '60%',
+              borderRadius: '0 4px 4px 0',
+              background: 'linear-gradient(180deg, #3B82F6 0%, #6366F1 100%)',
+            },
+          }),
+          '&:hover': {
+            backgroundColor: alpha('#3B82F6', 0.08),
+            '& .menu-arrow': {
+              opacity: 1,
+              transform: 'translateX(0)',
+            },
+          },
+        }}
+      >
+        <ListItemIcon 
+          sx={{ 
+            minWidth: open ? 40 : 0,
+            mr: open ? 'auto' : 0,
+            justifyContent: 'center',
+            color: item.active ? '#3B82F6' : '#6B7280',
+          }}
+        >
+          {item.badge && !open ? (
+            <Badge 
+              badgeContent={item.badge > 99 ? '99+' : item.badge} 
+              sx={{
+                '& .MuiBadge-badge': {
+                  backgroundColor: item.active ? '#3B82F6' : '#6B7280',
+                  color: 'white',
+                  fontSize: '0.6rem',
+                  fontWeight: 700,
+                  minWidth: 16,
+                  height: 16,
+                  padding: '0 4px',
+                },
+              }}
+            >
+              {item.icon}
+            </Badge>
+          ) : (
+            item.icon
+          )}
+        </ListItemIcon>
+        {open && (
+          <>
+            <ListItemText 
+              primary={item.text}
+              primaryTypographyProps={{
+                fontSize: '0.9rem',
+                fontWeight: item.active ? 600 : 500,
+                color: item.active ? '#3B82F6' : '#374151',
+              }}
+            />
+            {item.badge && (
+              <Chip
+                label={item.badge}
+                size="small"
+                sx={{
+                  height: 22,
+                  minWidth: 28,
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                  backgroundColor: item.active ? alpha('#3B82F6', 0.15) : '#F3F4F6',
+                  color: item.active ? '#3B82F6' : '#6B7280',
+                }}
+              />
+            )}
+            <ChevronRight 
+              size={16} 
+              className="menu-arrow"
+              style={{ 
+                marginLeft: 8,
+                opacity: 0,
+                transform: 'translateX(-4px)',
+                transition: 'all 0.2s ease',
+                color: '#9CA3AF',
+              }} 
+            />
+          </>
+        )}
+      </ListItemButton>
+    );
+
+    return (
+      <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
+        {open ? (
+          menuButton
+        ) : (
+          <Tooltip title={item.text} placement="right" arrow>
+            {menuButton}
+          </Tooltip>
+        )}
+      </ListItem>
+    );
+  };
 
   return (
     <Drawer
-      variant="persistent"
+      variant="permanent"
       anchor="left"
-      open={open}
-      onClose={onClose}
       sx={{
         width: drawerWidth,
         flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
           backgroundColor: '#ffffff',
-          borderRight: '1px solid #f0f0f0',
+          borderRight: 'none',
+          boxShadow: '4px 0 24px rgba(0, 0, 0, 0.04)',
+          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          overflowX: 'hidden',
         },
       }}
     >
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Avatar 
-          sx={{ 
-            background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
-            width: 36,
-            height: 36,
-            fontSize: '1rem',
-            fontWeight: 600,
-            border: '2px solid #ffffff',
-            boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.8)',
+      {/* Logo Section */}
+      <Box 
+        sx={{ 
+          p: open ? 2.5 : 1.5, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: open ? 'flex-start' : 'center',
+          gap: 1.5,
+          minHeight: 72,
+        }}
+      >
+        <Box
+          sx={{
+            width: 44,
+            height: 44,
+            minWidth: 44,
+            borderRadius: 2.5,
+            background: 'linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 14px rgba(59, 130, 246, 0.35)',
+            cursor: 'pointer',
+            transition: 'transform 0.2s ease',
+            '&:hover': {
+              transform: 'scale(1.05)',
+            },
           }}
+          onClick={onClose}
         >
-          NA
-        </Avatar>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#2563EB' }}>
-          Nassif Assurance
-        </Typography>
-      </Box>
-      <Divider />
-      <Box sx={{ overflow: 'auto', mt: 2 }}>
-        <List>
-          {menuItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                sx={{
-                  borderRadius: '0 24px 24px 0',
-                  mr: 2,
-                  ml: 1,
-                  mb: 0.5,
-                  ...(item.active && {
-                    backgroundColor: 'rgba(244, 67, 54, 0.08)',
-                    color: 'primary.main',
-                    '& .MuiListItemIcon-root': {
-                      color: 'primary.main',
-                    },
-                  }),
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-      <Box sx={{ mt: 'auto', p: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-          <Avatar 
-            sx={{ 
-              width: 36, 
-              height: 36,
-              background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-              fontSize: '1rem',
-              fontWeight: 600,
-              border: '2px solid #ffffff',
-              boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.8)',
-            }}
-          >
-            A
-          </Avatar>
-          <Box>
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              Agent Name
+          <Shield size={24} color="white" strokeWidth={2.5} />
+        </Box>
+        {open && (
+          <Box sx={{ overflow: 'hidden' }}>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 700, 
+                fontSize: '1.1rem',
+                background: 'linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '-0.02em',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Nassif Assurance
             </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Insurance Agent
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                color: '#9CA3AF',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Insurance CRM
             </Typography>
           </Box>
-        </Box>
+        )}
+      </Box>
+
+      <Divider sx={{ mx: open ? 2 : 1, borderColor: '#F3F4F6' }} />
+
+      {/* Main Navigation */}
+      <Box sx={{ overflow: 'auto', flex: 1, py: 2 }}>
+        {open && (
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              px: 3, 
+              py: 1, 
+              display: 'block',
+              color: '#9CA3AF',
+              fontWeight: 600,
+              fontSize: '0.65rem',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Main Menu
+          </Typography>
+        )}
+        <List sx={{ px: 0 }}>
+          {mainMenuItems.map(renderMenuItem)}
+        </List>
+
+        <Divider sx={{ mx: open ? 2 : 1, my: 2, borderColor: '#F3F4F6' }} />
+
+        {open && (
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              px: 3, 
+              py: 1, 
+              display: 'block',
+              color: '#9CA3AF',
+              fontWeight: 600,
+              fontSize: '0.65rem',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Settings
+          </Typography>
+        )}
+        <List sx={{ px: 0 }}>
+          {secondaryMenuItems.map(renderMenuItem)}
+        </List>
+      </Box>
+
+      {/* User Profile Section */}
+      <Box 
+        sx={{ 
+          p: open ? 2 : 1,
+          mx: open ? 1.5 : 1,
+          mb: 1.5,
+          borderRadius: open ? 3 : 2,
+          background: open ? 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)' : 'transparent',
+          border: open ? '1px solid #E5E7EB' : 'none',
+          display: 'flex',
+          justifyContent: open ? 'flex-start' : 'center',
+        }}
+      >
+        {open ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, width: '100%' }}>
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              badgeContent={
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: '50%',
+                    backgroundColor: '#10B981',
+                    border: '2px solid white',
+                  }}
+                />
+              }
+            >
+              <Avatar 
+                sx={{ 
+                  width: 44, 
+                  height: 44,
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                }}
+              >
+                SN
+              </Avatar>
+            </Badge>
+            <Box sx={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  fontWeight: 600,
+                  color: '#111827',
+                  fontSize: '0.875rem',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                Sylvain Nassif
+              </Typography>
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  color: '#6B7280',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Senior Agent
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                p: 0.75,
+                borderRadius: 1.5,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  backgroundColor: '#E5E7EB',
+                },
+              }}
+            >
+              <LogOut size={18} color="#6B7280" />
+            </Box>
+          </Box>
+        ) : (
+          <Tooltip title="Sylvain Nassif" placement="right" arrow>
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              badgeContent={
+                <Box
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    backgroundColor: '#10B981',
+                    border: '2px solid white',
+                  }}
+                />
+              }
+            >
+              <Avatar 
+                sx={{ 
+                  width: 40, 
+                  height: 40,
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  fontSize: '0.875rem',
+                  fontWeight: 700,
+                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                  cursor: 'pointer',
+                }}
+              >
+                SN
+              </Avatar>
+            </Badge>
+          </Tooltip>
+        )}
       </Box>
     </Drawer>
   );
