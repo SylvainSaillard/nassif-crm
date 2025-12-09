@@ -248,7 +248,19 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <Avatar>A</Avatar>
+                <Avatar
+                sx={{
+                  width: 36,
+                  height: 36,
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  border: '2px solid #ffffff',
+                  boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.8)',
+                }}
+              >
+                A
+              </Avatar>
               </IconButton>
             </Tooltip>
           </Box>

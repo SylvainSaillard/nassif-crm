@@ -58,10 +58,22 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
         },
       }}
     >
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Avatar sx={{ bgcolor: 'primary.main' }}>NA</Avatar>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-          Nacif Assurance
+      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Avatar 
+          sx={{ 
+            background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+            width: 36,
+            height: 36,
+            fontSize: '1rem',
+            fontWeight: 600,
+            border: '2px solid #ffffff',
+            boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.8)',
+          }}
+        >
+          NA
+        </Avatar>
+        <Typography variant="h6" sx={{ fontWeight: 600, color: '#2563EB' }}>
+          Nassif Assurance
         </Typography>
       </Box>
       <Divider />
@@ -92,8 +104,20 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
         </List>
       </Box>
       <Box sx={{ mt: 'auto', p: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-          <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+          <Avatar 
+            sx={{ 
+              width: 36, 
+              height: 36,
+              background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+              fontSize: '1rem',
+              fontWeight: 600,
+              border: '2px solid #ffffff',
+              boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.8)',
+            }}
+          >
+            A
+          </Avatar>
           <Box>
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
               Agent Name

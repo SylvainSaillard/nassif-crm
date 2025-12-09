@@ -389,11 +389,14 @@ const TasksList: React.FC = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Avatar
                         sx={{
-                          width: 24,
-                          height: 24,
+                          width: 28,
+                          height: 28,
                           mr: 1,
                           fontSize: '0.75rem',
+                          fontWeight: 600,
                           bgcolor: task.company === 'Bupa' ? '#0070ce' : task.company === 'Allianz' ? '#003781' : '#00857c',
+                          border: '1.5px solid #ffffff',
+                          boxShadow: '0 0 0 1px rgba(229, 231, 235, 0.5)',
                         }}
                       >
                         {task.companyLogo}
@@ -421,7 +424,22 @@ const TasksList: React.FC = () => {
                     </Box>
                   </TableCell>
                   <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-                    <AvatarGroup max={3} sx={{ '& .MuiAvatar-root': { width: 24, height: 24, fontSize: '0.75rem' } }}>
+                    <AvatarGroup 
+                      max={3} 
+                      sx={{ 
+                        '& .MuiAvatar-root': { 
+                          width: 28, 
+                          height: 28, 
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          border: '1.5px solid #ffffff',
+                        },
+                        '& .MuiAvatarGroup-avatar': {
+                          borderColor: '#ffffff',
+                          marginLeft: '-8px',
+                        }
+                      }}
+                    >
                       {task.assignedTo.map((agent, index) => (
                         <Avatar 
                           key={index} 
@@ -430,6 +448,10 @@ const TasksList: React.FC = () => {
                             backgroundImage: 'url(https://source.unsplash.com/random/100x100/?person)', // Example of using profile pictures
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
+                            width: 28,
+                            height: 28,
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
                           }}
                         >
                           {agent}
